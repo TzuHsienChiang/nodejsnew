@@ -44,9 +44,11 @@ app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，�
 //Ejs:設定路由的 response，先前我們使用 res.sendFile(html 檔案) 來使用 HTML 檔案。現在要改為使用 res.render(ejs 檔案) 來渲染畫面：
 app.get('/', (req, res) => {  //app.get也是middleware，是處理請求回應
         res.status(200) //網頁狀態碼 200代表請求成功 404就是fail
-        .render("index");
-        //.sendFile(path.join(__dirname, 'views', 'index.html'));
+        .render("index", {
+            pageTitle: 'Book Your Books online'
+        });   
 });
+
 
 app.get('/login', (req, res) => {
     res.status(200)
@@ -54,11 +56,18 @@ app.get('/login', (req, res) => {
         //.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
+
 app.get('/introduction', (req, res) => {
     res.status(200)
-    .render("introduction");
-        //.sendFile(path.join(__dirname, 'views', 'introduction.html'));//使用一個path的組合模組
+        .render("introduction",{
+            pageTitle:"intro"
+        });
+        //ejs加入參數之後，並指定對應的頁面（但是這會有個結果，就是只要render的頁面套用這個pageTitle變數才會印出資料，這邊這樣寫不是全域
+        //.render("introduction");ejs沒有加入參數以前，上面是有傳參
+        //.sendFile(path.join(__dirname, 'views', 'introduction.html'));//沒有用ejs的寫法：使用一個path的組合模組
     });
+
+
         
 //我們可以透過下面的判斷式，在確定 email 和 password 欄位都有填寫後，將使用者導頁到根頁面。
 app.post('/login', (req, res) => {

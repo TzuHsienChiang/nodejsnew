@@ -4,7 +4,7 @@ const path = require('path');
 
 // 第二個區塊 第三方模組(套件)
 const express = require('express');
-const bodyParser = require('body-parser'); //form 2step:：輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser）
+const bodyParser = require('body-parser'); //輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser）
 
 
 // 第三個區塊 自建模組
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 //在 HTML 使用靜態資源（img, css...）//
 app.use(express.static(path.join(__dirname, 'publics')));
 
-//form 3step：輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser)，接著在 app.js 將 body-parser 設定為 middleware
+//輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser)，接著在 app.js 將 body-parser 設定為 middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 
 /*----------處理rq 以及 res區----------*/
@@ -51,7 +51,7 @@ app.get('/introduction', (req, res) => {
         .sendFile(path.join(__dirname, 'views', 'introduction.html'));//使用一個path的組合模組
     });
         
-//from 4step:我們可以透過下面的判斷式，在確定 email 和 password 欄位都有填寫後，將使用者導頁到根頁面。
+//我們可以透過下面的判斷式，在確定 email 和 password 欄位都有填寫後，將使用者導頁到根頁面。
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     console.log('Form Data:', req.body);
@@ -60,6 +60,11 @@ app.post('/login', (req, res) => {
     } else {
 				console.log('欄位尚未填寫完成！')
     }
+});
+
+//萬用路由（路徑 ‘*’）能夠處理所有不匹配、不預期的路徑請求，就是如果路徑亂打的話會被導引到此頁：
+app.get('*', (req, res) => {
+    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 

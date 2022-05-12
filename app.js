@@ -17,16 +17,12 @@ const app = express();
 
 /*=======================================middleware========================================*/
 
-/*----------處理權限區----------*/
-app.use((req, res, next) => { //app.use也是middleware，他們不是處理請求，而是權限，會寫在app.get前面，因為app.get執行完就會結束(res end)
-	console.log('Hello!');
-    next();
-});
-
-app.use((req, res, next) => {
-	console.log('World!');
-    next();
-});
+/*----------app.use處理權限區----------*/
+//app.use也是middleware，他們不是處理請求，而是權限，會寫在app.get前面，因為app.get執行完就會結束(res end)//
+//app.use((req, res, next) => { 
+//	console.log('Hello!');
+//   next();
+//});
 
 //在 HTML 使用靜態資源（img, css...）//
 app.use(express.static(path.join(__dirname, 'publics')));
@@ -41,13 +37,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，可以省略此設定
 
-//Ejs:設定路由的 response，先前我們使用 res.sendFile(html 檔案) 來使用 HTML 檔案。現在要改為使用 res.render(ejs 檔案) 來渲染畫面：
+
+//Ejs:設定路由的 response，先前我們使用 res.sendFile(html 檔案) 來使用 HTML 檔案。現在要改為使用 res.render(ejs 檔案) 來渲染畫面
+const products = []; // 宣告常數 products 同時賦予它 [] 空陣列
+
 app.get('/', (req, res) => {  //app.get也是middleware，是處理請求回應
         res.status(200) //網頁狀態碼 200代表請求成功 404就是fail
         .render("index", {
-            pageTitle: 'Book Your Books online'
-        });   
+            pageTitle: 'Shopping whatever you want!!!',
+            products: products // 將常數 products 賦予給 路由參數 products
+        });
 });
+
+
 
 
 app.get('/login', (req, res) => {
@@ -91,3 +93,4 @@ app.get('*', (req, res) => {
 app.listen(3000, () => {
 	console.log('Web Server is running on port 3000');
 });
+

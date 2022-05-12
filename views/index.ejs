@@ -10,5 +10,11 @@
 <body>
     <h1><%= pageTitle %></h1>
     <img class="img1" src="/images/pexels-lisa-fotios-7934094 (2).jpg"> <!--記住相對路徑才不會報錯-->
+
+    <% if (products.length > 0) { %> <!-- TODO: 使用迴圈跑出 products 資料 -->
+       
+    <% } else { %>
+        尚無商品
+    <% } %>
 </body>
 </html>

@@ -73,7 +73,9 @@ app.get('/', (req, res) => {  //app.get也是middleware，是處理請求回應
 
 app.get('/login', (req, res) => {
     res.status(200)
-    .render("login");
+    .render('login', {
+        pageTitle: 'Login'
+    });
         //.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
@@ -105,7 +107,9 @@ app.post('/login', (req, res) => {
 //萬用路由（路徑 ‘*’）能夠處理所有不匹配、不預期的路徑請求，就是如果路徑亂打的話會被導引到此頁(切記！要放在middleware最後！）：
 app.get('*', (req, res) => {
     res.status(404)
-        .render('404')
+        .render('404', {
+            pageTitle: 'Page Not Found'
+        });
 });
 
 /*=======================================監聽區========================================*/

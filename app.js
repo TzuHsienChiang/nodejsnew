@@ -104,6 +104,11 @@ app.post('/login', (req, res) => {
 				console.log('欄位尚未填寫完成！')
     }
 });
+// 實作 logout 機制
+app.post('/logout', (req, res) => {
+    //使用post在/logout取得資料後會重新導頁回/login(因為還沒接資料庫，所以先導回/login頁面)
+    res.redirect('/login');
+});
 
 
 //萬用路由（路徑 ‘*’）能夠處理所有不匹配、不預期的路徑請求，就是如果路徑亂打的話會被導引到此頁(切記！要放在middleware最後！）：

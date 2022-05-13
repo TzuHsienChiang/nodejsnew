@@ -63,6 +63,7 @@ const products = [ //接上一判斷式練習，將宣告的 products 常數加�
 app.get('/', (req, res) => {  //app.get也是middleware，是處理請求回應
         res.status(200) //網頁狀態碼 200代表請求成功 404就是fail
         .render("index", { //render渲染指定網頁，給予以下變數
+            path:"/", //4-6 製作導覽列模板片段，目的？
             pageTitle: 'Shopping whatever you want!!!',
             products: products // 將常數 products 賦予給 路由參數 products
         });
@@ -70,10 +71,10 @@ app.get('/', (req, res) => {  //app.get也是middleware，是處理請求回應
 
 
 
-
 app.get('/login', (req, res) => {
     res.status(200)
     .render('login', {
+        path:"/login",//
         pageTitle: 'Login'
     });
         //.sendFile(path.join(__dirname, 'views', 'login.html'));
@@ -83,6 +84,7 @@ app.get('/login', (req, res) => {
 app.get('/introduction', (req, res) => {
     res.status(200)
         .render("introduction",{
+            path:"introduction",
             pageTitle:"intro"
         });
         //ejs加入參數之後，並指定對應的頁面（但是這會有個結果，就是只要render的頁面套用這個pageTitle變數才會印出資料，這邊這樣寫不是全域
@@ -107,10 +109,12 @@ app.post('/login', (req, res) => {
 //萬用路由（路徑 ‘*’）能夠處理所有不匹配、不預期的路徑請求，就是如果路徑亂打的話會被導引到此頁(切記！要放在middleware最後！）：
 app.get('*', (req, res) => {
     res.status(404)
-        .render('404', {
-            pageTitle: 'Page Not Found'
-        });
+    .render('404', {
+        path: '*',
+        pageTitle: 'Page Not Found'
+    });
 });
+
 
 /*=======================================監聽區========================================*/
 

@@ -1,0 +1,25 @@
+<!--引入自BS5 CDN，並依據需求做修改-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Navbar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link <%= path === '/' ? 'active' : '' %>" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+              <!-- actionUrl -->
+              <!-- method: GET -->
+              <!--app.js加上path:"/"，是為了點選變亮，而active是BS自己的變亮語法。以下是三元運算符啟動這功能，當path是/login路徑的時候，就為true，激發active變亮-->
+            <a class="nav-link <%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <button class="btn btn-outline-success" type="submit">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav>

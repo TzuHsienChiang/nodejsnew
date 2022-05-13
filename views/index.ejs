@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style/main.css"> <!--記住相對路徑才不會報錯-->
-    <!--BS5 CDN-->
-    <title>Home Page</title>
-    
+<%- include('./includes/header') %>
+<link rel="stylesheet" href="/style/main.css">
+
 </head>
 <body>
+    <%- include('./includes/navbar') %>
+
     <h1><%= pageTitle %></h1>
     <img class="img1" src="/images/pexels-lisa-fotios-7934094 (2).jpg"> <!--記住相對路徑才不會報錯-->
 
@@ -34,3 +29,5 @@
     
 </body>
 </html>
+
+    <%- include('./includes/footer') %> 

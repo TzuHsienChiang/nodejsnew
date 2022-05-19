@@ -3,7 +3,9 @@
 
 const getLogin = (req, res) => {
     res.status(200)
-        .render('login', {
+        //.render('login', {
+        .render('auth/login', { //5-6
+
             path: '/login',
             pageTitle: 'Login'
         });

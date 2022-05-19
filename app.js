@@ -16,6 +16,9 @@ const errorRoutes = require('./routes/404');
 
 const Product = require('./models/product');
 
+const User = require('./models/user'); //5-6
+
+
 
 ////////////////////////////////////////////////////////////////
 
@@ -42,7 +45,7 @@ app.use(errorRoutes);
 app.use(express.static(path.join(__dirname, 'publics')));
 
 //輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser)，接著在 app.js 將 body-parser 設定為 middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));//因為這一行所以用戶輸入資料時這行才可以被解析
 
 
 
@@ -146,6 +149,8 @@ database
 	//.sync()
     .sync({ force: true }) //5-4 修復: 資料重複 insert
 	.then((result) => {
+        User.create({ displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'})//5-6# 在啟動 Web Server 時，寫入 User 資料到資料庫中。現在，為了測試目的，在啟動 Web Server 時，使用剛建立和的 User 模組來新增 user，因為透過了 Sequelize，這個操作會同步到資料庫中：
+
         Product.bulkCreate(products);//5-3 接著，我們先在 app.js 建立 app 監聽的同時，使用 Product 來增加我們的 Product 資料。ORM 框架建立的 Product model ，擁有一個可以輸入多筆資料的方法 bulkCreate(array) 
 		app.listen(3000, () => {
 			console.log('Web Server is running on port 3000');

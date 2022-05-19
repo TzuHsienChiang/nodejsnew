@@ -28,11 +28,17 @@ const app = express();
 /*=======================================middleware========================================*/
 
 /*----------app.use處理權限區----------*/
-//app.use也是middleware，他們不是處理請求，而是權限，會寫在app.get前面，因為app.get執行完就會結束(res end)//
+//app.use也是middleware，他們不是處理請求，而是權限，會寫在app.get前面，因為app.get執行完就會結束(res end)//要寫next，才會自動往下
 //app.use((req, res, next) => { 
 //	console.log('Hello!');
 //   next();
 //});
+
+//在 HTML 使用靜態資源（img, css...）//  一定要放在路由前！！因為middleware是從上往下執行！所以要讓他們先解析資料！這樣路由才能繼續執行！
+app.use(express.static(path.join(__dirname, 'publics')));
+
+//輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser)，接著在 app.js 將 body-parser 設定為 middleware
+app.use(bodyParser.urlencoded({ extended: false }));//因為這一行所以用戶輸入資料時這行才可以被解析//一定要放在路由前！！因為他們要先解析資料！這樣路由才能繼續執行！
 
 //使用authRoutes //0519新增修改
 app.use(authRoutes);
@@ -41,11 +47,7 @@ app.use(errorRoutes);
 
 
 
-//在 HTML 使用靜態資源（img, css...）//
-app.use(express.static(path.join(__dirname, 'publics')));
 
-//輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser)，接著在 app.js 將 body-parser 設定為 middleware
-app.use(bodyParser.urlencoded({ extended: false }));//因為這一行所以用戶輸入資料時這行才可以被解析
 
 
 

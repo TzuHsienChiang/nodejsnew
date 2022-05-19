@@ -143,7 +143,8 @@ app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，�
 
 //5-2 gitHub結合db改寫成以下
 database
-	.sync()
+	//.sync()
+    .sync({ force: true }) //修復: 資料重複 insert
 	.then((result) => {
         Product.bulkCreate(products);//5-3 接著，我們先在 app.js 建立 app 監聽的同時，使用 Product 來增加我們的 Product 資料。ORM 框架建立的 Product model ，擁有一個可以輸入多筆資料的方法 bulkCreate(array) 
 		app.listen(3000, () => {

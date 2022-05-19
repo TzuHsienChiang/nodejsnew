@@ -1,4 +1,4 @@
-/*=======================================module require========================================*/
+/*=======================================module require:匯入區，匯入完才可使用========================================*/
 // 第一個區塊 內建模組
 const path = require('path');
 
@@ -8,11 +8,15 @@ const bodyParser = require('body-parser'); //輸入指令安裝 body-parser，�
 
 
 // 第三個區塊 自建模組
+const authRoutes=require('./routes/auth');//匯入routes權限的模組 字定義 //0519新增修改
+const shopRoutes = require('./routes/shop'); 
+const errorRoutes = require('./routes/404');
+
+
 
 ////////////////////////////////////////////////////////////////
 
 const app = express();
-
 
 
 /*=======================================middleware========================================*/
@@ -23,6 +27,13 @@ const app = express();
 //	console.log('Hello!');
 //   next();
 //});
+
+//使用authRoutes //0519新增修改
+app.use(authRoutes);
+app.use(shopRoutes);
+app.use(errorRoutes);
+
+
 
 //在 HTML 使用靜態資源（img, css...）//
 app.use(express.static(path.join(__dirname, 'publics')));
@@ -60,25 +71,25 @@ const products = [ //接上一判斷式練習，將宣告的 products 常數加�
         imageUrl: 'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/062/76/0010627615.jpg&v=5315ab5f&w=348&h=348'
     },
 ];
-app.get('/', (req, res) => {  //app.get也是middleware，是處理請求回應
-        res.status(200) //網頁狀態碼 200代表請求成功 404就是fail
-        .render("index", { //render渲染指定網頁，給予以下變數
-            path:"/", //4-6 製作導覽列模板片段，目的？
-            pageTitle: 'Shopping whatever you want!!!',
-            products: products // 將常數 products 賦予給 路由參數 products
-        });
-});
+// app.get('/', (req, res) => {  //app.get也是middleware，是處理請求回應
+//         res.status(200) //網頁狀態碼 200代表請求成功 404就是fail
+//         .render("index", { //和view要一個index，並渲染。render渲染指定網頁，給予以下變數
+//             path:"/", //4-6 製作導覽列模板片段，目的？
+//             pageTitle: 'Shopping whatever you want!!!',
+//             products: products // 將常數 products 賦予給 路由參數 products
+//         });
+// });
 
 
 
-app.get('/login', (req, res) => {
-    res.status(200)
-    .render('login', {
-        path:"/login",//
-        pageTitle: 'Login'
-    });
-        //.sendFile(path.join(__dirname, 'views', 'login.html'));
-});
+// app.get('/login', (req, res) => { //0519同類的移動到routes的同類資料夾auth了
+//     res.status(200)
+//     .render('login', {
+//         path:"/login",//
+//         pageTitle: 'Login'
+//     });
+//         //.sendFile(path.join(__dirname, 'views', 'login.html'));
+// });
 
 
 app.get('/introduction', (req, res) => {
@@ -94,31 +105,31 @@ app.get('/introduction', (req, res) => {
 
 
         
-//我們可以透過下面的判斷式，在確定 email 和 password 欄位都有填寫後，將使用者導頁到根頁面。
-app.post('/login', (req, res) => {
-    const { email, password } = req.body;
-    console.log('Form Data:', req.body);
-    if (email && password) {
-        res.redirect('/');
-    } else {
-				console.log('欄位尚未填寫完成！')
-    }
-});
-// 實作 logout 機制
-app.post('/logout', (req, res) => {
-    //使用post在/logout取得資料後會重新導頁回/login(因為還沒接資料庫，所以先導回/login頁面)
-    res.redirect('/login');
-});
+//我們可以透過下面的判斷式，在確定 email 和 password 欄位都有填寫後，將使用者導頁到根頁面。 //0519同類的移動到routes的同類資料夾auth了
+// app.post('/login', (req, res) => {
+//     const { email, password } = req.body;
+//     console.log('Form Data:', req.body);
+//     if (email && password) {
+//         res.redirect('/');
+//     } else {
+// 				console.log('欄位尚未填寫完成！')
+//     }
+// });
+// 實作 logout 機制 //0519同類的移動到routes的同類資料夾auth了
+// app.post('/logout', (req, res) => {
+//     //使用post在/logout取得資料後會重新導頁回/login(因為還沒接資料庫，所以先導回/login頁面)
+//     res.redirect('/login');
+// });
 
 
-//萬用路由（路徑 ‘*’）能夠處理所有不匹配、不預期的路徑請求，就是如果路徑亂打的話會被導引到此頁(切記！要放在middleware最後！）：
-app.get('*', (req, res) => {
-    res.status(404)
-    .render('404', {
-        path: '*',
-        pageTitle: 'Page Not Found'
-    });
-});
+//萬用路由（路徑 ‘*’）能夠處理所有不匹配、不預期的路徑請求，就是如果路徑亂打的話會被導引到此頁(切記！要放在middleware最後！因為萬用路由匹配所有）：
+// app.get('*', (req, res) => {
+//     res.status(404)
+//     .render('404', {
+//         path: '*',
+//         pageTitle: 'Page Not Found'
+//     });
+// });
 
 
 /*=======================================監聽區========================================*/

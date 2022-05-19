@@ -21,3 +21,4 @@ const database = new Sequelize ('demo', 'admin', 'admin', { //demo是資料庫�
 
 
 module.exports = database; 
+

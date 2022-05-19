@@ -8,6 +8,8 @@ const bodyParser = require('body-parser'); //輸入指令安裝 body-parser，�
 
 
 // 第三個區塊 自建模組
+const database = require('./utils/database'); //git 5-2
+
 const authRoutes=require('./routes/auth');//匯入routes權限的模組 字定義 //0519新增修改
 const shopRoutes = require('./routes/shop'); 
 const errorRoutes = require('./routes/404');
@@ -134,7 +136,18 @@ app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，�
 
 /*=======================================監聽區========================================*/
 
-app.listen(3000, () => {
-	console.log('Web Server is running on port 3000');
-});
+// app.listen(3000, () => {
+// 	console.log('Web Server is running on port 3000');
+// });
 
+//5-2 gitHub結合db改寫成以下
+database
+	.sync()
+	.then((result) => {
+		app.listen(3000, () => {
+			console.log('Web Server is running on port 3000');
+		});
+	})
+	.catch((err) => {
+		console.log('create web server error: ', err);
+	});

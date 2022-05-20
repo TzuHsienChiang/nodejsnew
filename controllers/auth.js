@@ -28,6 +28,7 @@ const postLogin = (req, res) => {
         }
         if (user.password === password) { //(user.password 從資料庫勞出的=== password 使用者輸入的)
             console.log('login: 成功');
+            req.session.isLogin = true;//5-7
             return res.redirect('/')
         } 
         console.log('login: 找不到此 user 或密碼錯誤');
@@ -38,10 +39,20 @@ const postLogin = (req, res) => {
     });
 };
 
+// const postLogout = (req, res) => {
+//     req.session.isLogin = false; //5-7
+//     res.redirect('/login')
+    
+// }
+
+//5-7 調整上面：登出時毀滅 session
+//在執行登出功能後，session 理應被清除，所以我們來實作這個機制。打開 controllers/auth.js 來調整 postLogout：
 const postLogout = (req, res) => {
-    // TODO: 實作 logout 機制
-    res.redirect('/login')
-}
+    req.session.destroy((err) => {
+        console.log('session destroy() error: ', err);
+        res.redirect('/login');
+    });
+};
 
 module.exports = {
     getLogin,

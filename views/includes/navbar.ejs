@@ -17,13 +17,13 @@
             <a class="nav-link <%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
           </li>
         </ul>
-          <form class="d-flex" action="/logout" method="POST"> <!--為了實作 logout 機制：因為沒有資料庫，
-            故這邊假設在home、任一頁點選logout會導引回login頁，在app.js的寫法：
-            app.post('/logout', (req, res) => {
-            res.redirect('/login');//使用post在/logout取得資料後會重新導頁回/login(因為還沒接資料庫，所以先導回/login頁面)
-        })-->
-          <button class="btn btn-outline-success" type="submit">Logout</button>
-        </form>
+
+        <% if(isLogin ) { %>    <!--有用到node.js變數的話，寫在html裡要用這語法 %-->     
+          <form class="d-flex" action="/logout" method="POST">
+            <button class="btn btn-outline-success" type="submit">Logout</button>
+          </form>
+        <% } %> <!--5-7-->
+        
       </div>
     </div>
   </nav>

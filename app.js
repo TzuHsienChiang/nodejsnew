@@ -18,12 +18,15 @@ const Product = require('./models/product');
 
 const User = require('./models/user'); //5-6
 
+const session = require('express-session');//5-7 先匯入express-session套件
 
 
 ////////////////////////////////////////////////////////////////
 
 const app = express();
 
+const port = 3000; //5-7
+const oneDay = 1000 * 60 * 60 * 24; //5-7
 
 /*=======================================middleware========================================*/
 
@@ -40,14 +43,30 @@ app.use(express.static(path.join(__dirname, 'publics')));
 //輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser)，接著在 app.js 將 body-parser 設定為 middleware
 app.use(bodyParser.urlencoded({ extended: false }));//因為這一行所以用戶輸入資料時這行才可以被解析//一定要放在路由前！！因為他們要先解析資料！這樣路由才能繼續執行！
 
+//5-7 接著，為了讓每一個視圖都可以使用 isLogin ，要使用 express 提供給 res 的 locals 進行儲存：儲存在 res.locals 的資料狀態，res.locals這個是＝session套組的全域用法，這樣後面的東西都可以有全域性質，而不用一個一個在需要login資料的地方(如shop.js:.render("index",{isLogin:"true"))做設定，因為這樣的話每一個都要寫屬性設定。這樣寫全部視圖可以直接取用。
+//因此，我們撰寫一個自定義的 middleware（參考老師資料夾express api寫法）將session全部存在這，撰寫方法如下：
+app.use((req, res, next) => {
+    res.locals.path = req.url;
+    res.locals.isLogin = req.session.isLogin || false;
+    next();
+});
+
 //使用authRoutes //0519新增修改
 app.use(authRoutes);
 app.use(shopRoutes);
 app.use(errorRoutes);
 
+//5-7 先匯入express-session套件後在 app.js 匯入 express-session 套件後，就可以使用這個中介軟體函式，如下：
+app.use(session({  //前面藍字的部分都是這個session套件的規定用法
+	secret: 'sessionToken',  // 加密用的字串 
+	resave: false,   // 沒變更內容是否強制回存
+	saveUninitialized: false ,  // 新 session 未變更內容是否儲存
+	cookie: {
+		//maxAge: 10000 // session 狀態儲存多久？單位為毫秒 
+        maxAge: oneDay  //const port = 3000; const oneDay = 1000 * 60 * 60 * 24; 先宣告變數這樣以後調動數字比較方便
 
-
-
+	}
+})); 
 
 
 
@@ -154,8 +173,10 @@ database
         User.create({ displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'})//5-6# 在啟動 Web Server 時，寫入 User 資料到資料庫中。現在，為了測試目的，在啟動 Web Server 時，使用剛建立和的 User 模組來新增 user，因為透過了 Sequelize，這個操作會同步到資料庫中：
 
         Product.bulkCreate(products);//5-3 接著，我們先在 app.js 建立 app 監聽的同時，使用 Product 來增加我們的 Product 資料。ORM 框架建立的 Product model ，擁有一個可以輸入多筆資料的方法 bulkCreate(array) 
-		app.listen(3000, () => {
-			console.log('Web Server is running on port 3000');
+            // app.listen(3000, () => {
+            //     console.log('Web Server is running on port 3000');
+            app.listen(port, () => { //5-7將以上改寫成這個，因為這樣之後改port，只要直接改上面宣告變數的地方即可
+			    console.log(`Web Server is running on port ${port}`);
 		});
 	})
 	.catch((err) => {

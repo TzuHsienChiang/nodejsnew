@@ -16,6 +16,14 @@ const getLogin = (req, res) => {
         });
 };
 
+const getSignup = (req, res) => { //7-1
+    res.status(200)
+        .render('auth/signup', {
+            pageTitle: 'Signup'
+        });
+}
+
+
 const postLogin = (req, res) => {
     const { email, password } = req.body;
     //解構賦值，本來要寫成const{email,password}={email:'1@1',password:'1111111'}
@@ -62,6 +70,7 @@ const postLogout = (req, res) => {
 
 module.exports = {
     getLogin,
+    getSignup,
     postLogin,
     postLogout,
 }; 

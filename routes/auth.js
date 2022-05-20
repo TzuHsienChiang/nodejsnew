@@ -19,6 +19,8 @@ const router = express.Router();
 // });
 //對照git hub 5-1 把上面改寫成下一句
 router.get('/login', authController.getLogin);
+router.get('/signup', authController.getSignup) //7-1
+
 
 
 // router.post('/login', (req, res) => {

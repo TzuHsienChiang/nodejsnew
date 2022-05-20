@@ -179,7 +179,7 @@ database
 	.sync() //用老師虛擬db的寫法，之後用自己的要寫成.sync({ force: true })
 
     /*之後全寫完app.js，以下這段要刪掉，因為這段是測試資料*/ 
-    //.sync({ force: true }) //連線時，5-4 修復: 資料重複 insert  sync：和資料庫連線、true：指的是重刷資料庫清空回歸資料庫 搭配utils-database.js
+    //.sync({ force: true }) //和 db 連線時，強制重設 db。sync：和資料庫連線、true：指的是重刷資料庫清空回歸資料庫 搭配utils-database.js
 	.then((result) => { //因為沒有註冊功能，所以目前以這方式創立帳號，只有這帳號的人才能登入成功
         //7-3 User.create({ displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'})//5-6# 在啟動 Web Server 時，寫入 User 資料到資料庫中。現在，為了測試目的，在啟動 Web Server 時，使用剛建立和的 User 模組來新增 user，因為透過了 Sequelize，這個操作會同步到資料庫中：
         //7-3 Product.bulkCreate(products);//5-3 接著，我們先在 app.js 建立 app 監聽的同時，使用 Product 來增加我們的 Product 資料。ORM 框架建立的 Product model ，擁有一個可以輸入多筆資料的方法 bulkCreate(array) 

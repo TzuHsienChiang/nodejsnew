@@ -1,7 +1,10 @@
 <!--引入自BS5 CDN，並依據需求做修改-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Navbar</a>
+      <img src="/images/logo.png" style="width: 100px">
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -14,13 +17,21 @@
               <!-- actionUrl -->
               <!-- method: GET -->
               <!--app.js加上path:"/"，是為了點選變亮，而active是BS自己的變亮語法。以下是三元運算符啟動這功能，當path是/login路徑的時候，就為true，激發active變亮-->
-            <a class="nav-link <%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
+            <!-- <a class="nav-link <%= path === '/login' ? 'active' : '' %>" href="/login">Login</a> -->
+            <a class="nav-link <%= path === '/' ? 'active' : '' %>" aria-current="page" href="/">Shop</a> <!--5-7-->
           </li>
+          <% if (!isLogin) { %>
+            <li class="nav-item">
+              <a class="nav-link <%= path === '/login' ? 'active' : '' %>" aria-current="page" href="/login">Login</a>
+            </li>
+          <% } %> <!--5-7-->
         </ul>
 
-        <% if(isLogin ) { %>    <!--有用到node.js變數的話，寫在html裡要用這語法 %-->     
+        <% if (isLogin) { %>
+          <!--有用到node.js變數的話，寫在html裡要用這語法 %-->     
           <form class="d-flex" action="/logout" method="POST">
-            <button class="btn btn-outline-success" type="submit">Logout</button>
+            <!-- <button class="btn btn-outline-success" type="submit">Logout</button> -->
+            <button class="btn btn-outline-primary">Logout</button>
           </form>
         <% } %> <!--5-7-->
         

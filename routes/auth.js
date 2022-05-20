@@ -42,6 +42,7 @@ router.post('/login', authController.postLogin);
 //對照git hub 5-1 把上面改寫成下一句
 router.post('/logout', authController.postLogout);
 
+router.post('/signup', authController.postSignup);
 
 
 module.exports=router; //匯出模組

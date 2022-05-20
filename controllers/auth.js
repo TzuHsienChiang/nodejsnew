@@ -17,9 +17,34 @@ const getLogin = (req, res) => {
 };
 
 const getSignup = (req, res) => { //7-1
+    const errorMessage = req.flash('errorMessage')[0]; //7-2
+
     res.status(200)
         .render('auth/signup', {
-            pageTitle: 'Signup'
+            //pageTitle: 'Signup'
+            pageTitle: 'Signup',//7-2
+            errorMessage: errorMessage //7-2
+
+        });
+}
+
+//7-2
+const postSignup = (req, res) => {
+    const { displayName, email, password } = req.body; //解構賦值寫法
+    User.findOne({ where: { email } })
+        .then((user) => {
+            if (user) {
+                req.flash('errorMessage', '此帳號已存在！請使用其他 Email。')
+                return res.redirect('/signup');
+            } else {
+                // TODO: 實作註冊功能
+            }
+        })
+        .then((result) => {
+            res.redirect('/login');
+        })
+        .catch((err) => {
+            console.log('signup_error', err);
         });
 }
 
@@ -73,4 +98,6 @@ module.exports = {
     getSignup,
     postLogin,
     postLogout,
+    postSignup //7-2
+
 }; 

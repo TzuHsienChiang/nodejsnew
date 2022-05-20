@@ -11,12 +11,12 @@ const Sequelize = require('sequelize');
 //     host: 'localhost'
 // });
 
-// 課程期間限定(~2022/5/31)遠端 DB 之後要自行操作的話要先在資料庫建立一個db
+// 課程期間限定(~2022/5/31)遠端 DB 之後要自行操作的話要先在資料庫建立一個db //host地方輸入"localhost"或“127.0.1”即可
 
 
 const database = new Sequelize ('demo', 'admin', 'admin', { //demo是資料庫名字，要先在資料庫建立一個db才可以引入，admin、admin是帳號密碼
 	dialect: 'mysql',
-	host: '130.211.120.155'
+	host: '130.211.120.155' 
 });
 
 

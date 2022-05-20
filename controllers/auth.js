@@ -1,4 +1,6 @@
 //對照git hub 5-1 
+const bcryptjs = require('bcryptjs'); //7-3
+
 
 const User = require('../models/user');//5-6-2
 
@@ -36,8 +38,15 @@ const postSignup = (req, res) => {
             if (user) {
                 req.flash('errorMessage', '此帳號已存在！請使用其他 Email。')
                 return res.redirect('/signup');
-            } else {
-                // TODO: 實作註冊功能
+            } else { //7-3
+                //return User.create({ displayName, email, password });
+                return bcryptjs.hash(password, 12)
+                .then((hashedPassword) => {
+                    return User.create({ displayName, email, password: hashedPassword });
+                })
+                .catch((err) => {
+                    console.log('create new user error: ', err);
+                }) //7-3
             }
         })
         .then((result) => {

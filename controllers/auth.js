@@ -35,6 +35,8 @@ const postSignup = (req, res) => {
     const { displayName, email, password } = req.body; //解構賦值寫法
     User.findOne({ where: { email } })
         .then((user) => {
+            console.log('user', user);  //7-3-2 註冊功能(3) 使用 bcryptjs 加/解密敏感性資訊
+
             if (user) {
                 req.flash('errorMessage', '此帳號已存在！請使用其他 Email。')
                 return res.redirect('/signup');
@@ -70,7 +72,8 @@ const postLogin = (req, res) => {
     .then((user) => {
         if (!user) {
             console.log('login: 找不到此 user 或密碼錯誤');
-            req.flash('errorMessage', '錯誤的 Email 或 Password。'); //5-8
+            //req.flash('errorMessage', '錯誤的 Email 或 Password。'); //5-8
+            req.flash('errorMessage', '錯誤的 Email 或 Password。');//7-3-2
             return res.redirect('/login');//沒有return就會繼續執行
         }
         if (user.password === password) { //(user.password 從資料庫勞出的=== password 使用者輸入的)
@@ -81,6 +84,25 @@ const postLogin = (req, res) => {
         console.log('login: 找不到此 user 或密碼錯誤');
         req.flash('errorMessage', '錯誤的 Email 或 Password。'); //5-8
         res.redirect('/login');
+        //7-3-2
+        bcryptjs
+        .compare(password, user.password)
+        .then((isMatch) => {
+            console.log('isMatch', isMatch);
+            if (isMatch) {
+                req.session.user = user;
+                req.session.isLogin = true;
+                return req.session.save((err) => {
+                    console.log('postLogin - save session error: ', err);
+                    res.redirect('/');
+                });
+            }
+            req.flash('errorMessage', '錯誤的 Email 或 Password。')
+            res.redirect('/login');
+        })
+        .catch((err) => {
+            return res.redirect('/login');
+        }) //7-3-2
     })
     .catch((err) => { //catch是偵錯系統性問題，所以資料有無寫入正確是要寫在上方
         console.log('login error:', err);  

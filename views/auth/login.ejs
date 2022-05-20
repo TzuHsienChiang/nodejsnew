@@ -1,32 +1,43 @@
-<%- include('../includes/header') %> <!--5-6多+一個.，因為把login.ejs移動進來auth，故現在在login.ejs要先往上一層到auth才可以找到和他同層的includes/header'-->
-
+<%- include('../includes/header') %>
 </head>
 <body>
-    <%- include('../includes/navbar') %> <!--5-6多+一個.-->
+    <%- include('../includes/navbar') %>
+    <div class="container-md mt-3">
+        <div class="row justify-content-center">
+            <div class="col-8 text-center">
+                <h1>Login SKOOB</h1>
+            </div>
+            <% if (errorMessage) { %>
+              <div class="col-8">
+                <div class="alert alert-danger" role="alert">
+                  <%= errorMessage %>
+                </div>
+              </div>
+            <% } %>
+            <div class="col-8">
+                <form class="row g-3 needs-validation" action="/login" method="POST">
+                    <div>
+                      <label for="email" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="email" name="email">
+                    </div>
 
-    <h1><%= pageTitle %></h1>
-    <h2>This is login Page!!!</h2>
-    <form action="/login" method="POST"> 
-        <div>
-            <label for="name">Name</label>
-            <input type="name" name="name" value="Your name" id="name">
+                    <div>
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="password" name="password">
+                    </div>
+
+                    <div>
+                      <button class="btn btn-primary" type="submit">Login</button>
+                    </div>
+                  </form>
+            </div>
         </div>
+    </div>
 
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" value="Your email" id="email">
-        </div>
+    <%- include('../includes/footer') %>
 
-        <div>
-            <label for="password">Password</label>
-            <input type="password" name="password" value="" id="password">
-        </div>
-       
-        <button type="submit">Login</button>
-
-    </form>
-    
 </body>
 </html>
 
-    <%- include('../includes/footer') %>  <!--5-6多+一個.接者可以回資料庫看有無登入資料-->
+
+

@@ -19,6 +19,8 @@ const Product = require('./models/product');
 const User = require('./models/user'); //5-6
 
 const session = require('express-session');//5-7 先匯入express-session套件
+const connectFlash = require('connect-flash'); //5-9
+
 
 
 ////////////////////////////////////////////////////////////////
@@ -47,6 +49,10 @@ app.use(session({  //前面藍字的部分都是這個session套件的規定用�
         maxAge: oneDay  //const port = 3000; const oneDay = 1000 * 60 * 60 * 24; 先宣告變數這樣以後調動數字比較方便
 	}
 })); 
+
+//5-9
+app.use(connectFlash());
+
 
 
 //在 HTML 使用靜態資源（img, css...）//  一定要放在路由前！！因為middleware是從上往下執行！所以要讓他們先解析資料！這樣路由才能繼續執行！

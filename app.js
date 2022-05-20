@@ -19,7 +19,7 @@ const Product = require('./models/product');
 const User = require('./models/user'); //5-6
 
 const session = require('express-session');//5-7 先匯入express-session套件
-const connectFlash = require('connect-flash'); //5-9
+const connectFlash = require('connect-flash'); //5-8
 
 
 
@@ -50,7 +50,7 @@ app.use(session({  //前面藍字的部分都是這個session套件的規定用�
 	}
 })); 
 
-//5-9
+//5-8
 app.use(connectFlash());
 
 

@@ -3,7 +3,7 @@
 const User = require('../models/user');//5-6-2
 
 const getLogin = (req, res) => {
-    const errorMessage = req.flash('errorMessage')[0]; //5-9
+    const errorMessage = req.flash('errorMessage')[0]; //5-8
     
     res.status(200)
         //.render('login', {
@@ -11,7 +11,7 @@ const getLogin = (req, res) => {
 
             path: '/login',
             //pageTitle: 'Login'
-            pageTitle: 'Login', //5-9
+            pageTitle: 'Login', //5-8
             errorMessage
         });
 };
@@ -28,7 +28,7 @@ const postLogin = (req, res) => {
     .then((user) => {
         if (!user) {
             console.log('login: 找不到此 user 或密碼錯誤');
-            req.flash('errorMessage', '錯誤的 Email 或 Password。'); //5-9
+            req.flash('errorMessage', '錯誤的 Email 或 Password。'); //5-8
             return res.redirect('/login');//沒有return就會繼續執行
         }
         if (user.password === password) { //(user.password 從資料庫勞出的=== password 使用者輸入的)
@@ -37,7 +37,7 @@ const postLogin = (req, res) => {
             return res.redirect('/')
         } 
         console.log('login: 找不到此 user 或密碼錯誤');
-        req.flash('errorMessage', '錯誤的 Email 或 Password。'); //5-9
+        req.flash('errorMessage', '錯誤的 Email 或 Password。'); //5-8
         res.redirect('/login');
     })
     .catch((err) => { //catch是偵錯系統性問題，所以資料有無寫入正確是要寫在上方

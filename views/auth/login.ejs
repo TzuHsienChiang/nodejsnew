@@ -16,7 +16,6 @@
             <% } %>
             <div class="col-8">
                 <form class="row g-3 needs-validation" action="/login" method="POST">
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>"> <!--7-4-->  
                   <div>
                       <label for="email" class="form-label">Email</label>
                       <input type="email" class="form-control" id="email" name="email">
@@ -28,7 +27,8 @@
                     </div>
 
                     <div>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>"> <!--7-4-->
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <!--7-4-->
 
                       <button class="btn btn-primary" type="submit">Login</button>
                     </div>

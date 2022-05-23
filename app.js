@@ -4,7 +4,6 @@ const path = require('path');
 
 // 第二個區塊 第三方模組(套件)
 const express = require('express');
-const bodyParser = require('body-parser'); //輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser）
 
 
 // 第三個區塊 自建模組
@@ -22,7 +21,7 @@ const session = require('express-session');//5-7 先匯入express-session套件
 const connectFlash = require('connect-flash'); //5-8
 
 const csrfProtection = require('csurf'); //7-4
-
+const bodyParser = require('body-parser'); //解析url
 
 
 ////////////////////////////////////////////////////////////////
@@ -40,9 +39,8 @@ const oneDay = 1000 * 60 * 60 * 24; //5-7
 //	console.log('Hello!');
 //   next();
 //});
-
-
-app.use(csrfProtection()); //7-4
+//輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser)，接著在 app.js 將 body-parser 設定為 middleware
+app.use(bodyParser.urlencoded({ extended: false }));//7-4 解析url功能，因此直接放最前面。因為這一行所以用戶輸入資料時這行才可以被解析//一定要放在路由前！！因為他們要先解析資料！這樣路由才能繼續執行！
 
 
 
@@ -57,6 +55,8 @@ app.use(session({  //前面藍字的部分都是這個session套件的規定用�
 	}
 })); 
 
+app.use(csrfProtection()); //7-4 這個防禦機制是建立在session上面，所以要寫在session後面
+
 //5-8
 app.use(connectFlash());
 
@@ -65,8 +65,6 @@ app.use(connectFlash());
 //在 HTML 使用靜態資源（img, css...）//  一定要放在路由前！！因為middleware是從上往下執行！所以要讓他們先解析資料！這樣路由才能繼續執行！
 app.use(express.static(path.join(__dirname, 'publics')));
 
-//輸入指令安裝 body-parser，接著在 app.js 匯入該模組（body-parser)，接著在 app.js 將 body-parser 設定為 middleware
-app.use(bodyParser.urlencoded({ extended: false }));//因為這一行所以用戶輸入資料時這行才可以被解析//一定要放在路由前！！因為他們要先解析資料！這樣路由才能繼續執行！
 
 //5-7 接著，為了讓每一個視圖都可以使用 isLogin ，要使用 express 提供給 res 的 locals 進行儲存：儲存在 res.locals 的資料狀態，res.locals這個是＝session套組的全域用法，這樣後面的東西都可以有全域性質，而不用一個一個在需要login資料的地方(如shop.js:.render("index",{isLogin:"true"))做設定，因為這樣的話每一個都要寫屬性設定。這樣寫全部視圖可以直接取用。
 //因此，我們撰寫一個自定義的 middleware（參考老師資料夾express api寫法）將session全部存在這，撰寫方法如下：

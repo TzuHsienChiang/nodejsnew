@@ -4,7 +4,7 @@ const bcryptjs = require('bcryptjs'); //7-3
 
 const User = require('../models/user');//5-6-2
 
-const getLogin = (req, res) => {
+const getLogin = (req, res) => {  
     const errorMessage = req.flash('errorMessage')[0]; //5-8
     
     res.status(200)
@@ -33,7 +33,7 @@ const getSignup = (req, res) => { //7-1
 //7-2
 const postSignup = (req, res) => {
     const { displayName, email, password } = req.body; //解構賦值寫法
-    User.findOne({ where: { email } })
+    User.findOne({ where: { email } })  //去
         .then((user) => {
             console.log('user', user);  //7-3-2 註冊功能(3) 使用 bcryptjs 加/解密敏感性資訊
 
@@ -42,8 +42,8 @@ const postSignup = (req, res) => {
                 return res.redirect('/signup');
             } else { //7-3
                 //return User.create({ displayName, email, password });
-                return bcryptjs.hash(password, 12)
-                .then((hashedPassword) => {
+                return bcryptjs.hash(password, 12)  //加密用戶輸入過的密碼
+                .then((hashedPassword) => {    //返回加密過的密碼
                     return User.create({ displayName, email, password: hashedPassword });
                 })
                 .catch((err) => {

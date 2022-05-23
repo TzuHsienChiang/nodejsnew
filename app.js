@@ -22,6 +22,8 @@ const connectFlash = require('connect-flash'); //5-8
 
 const csrfProtection = require('csurf'); //7-4
 const bodyParser = require('body-parser'); //解析url
+//8-1-2 新增 Cart 模型後，回到app.js匯入該模組並使用，建立用戶、產品、購物車彼此關連
+const Cart=require('./models/cart');
 
 
 ////////////////////////////////////////////////////////////////
@@ -77,6 +79,16 @@ app.use((req, res, next) => {
 
     next();
 });
+
+//8-1-3 新增 Cart 模型後，回到app.js匯入該模組並使用，建立用戶、產品、購物車彼此關連
+/*定義 User 與 Cart 的關係 :
+在 User、Cart 之間有如下關聯：
+- 一個 User 擁有一個 Cart。
+- 一個 Cart 屬於一個 User。
+所以我們要在 app.js 定義模型關聯的地方新增程式碼如下：
+*/
+User.hasOne(Cart); //sequlize語法
+Cart.belongsTo(User);
 
 //使用authRoutes //0519新增修改
 app.use(authRoutes);
@@ -185,7 +197,7 @@ app.set('views', 'views'); // 預設路徑就是 views，如果沒有變動，�
 //5-2 gitHub結合db改寫成以下
 database
 	.sync() //用老師虛擬db的寫法，之後用自己的要寫成.sync({ force: true })
-    //or有自己資料庫後寫成：.sync({ force: true }) //和 db 連線時，強制重設 db。sync：和資料庫連線、true：指的是重刷資料庫清空回歸資料庫 搭配utils-database.js
+    //or有自己資料庫後寫成：.sync({ force: true }) //和 db 連線時， force: tru是指強制重設重置 db，因為在開發過程中有許多資料要測試，如果沒有重置的話，以前的資料就會是錯的。sync：和資料庫連線、true：指的是重刷資料庫清空回歸資料庫 搭配utils-database.js
     /*之後全寫完app.js，以下這段要刪掉，因為這段是測試資料*/ 
 	.then((result) => { //因為沒有註冊功能，所以目前以這方式創立帳號，只有這帳號的人才能登入成功
         //7-3 User.create({ displayName: 'Admin', email: 'admin@skoob.com', password: '11111111'})//5-6# 在啟動 Web Server 時，寫入 User 資料到資料庫中。現在，為了測試目的，在啟動 Web Server 時，使用剛建立和的 User 模組來新增 user，因為透過了 Sequelize，這個操作會同步到資料庫中：

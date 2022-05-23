@@ -1,4 +1,4 @@
-//8-1-1 新增 Cart 模型，這邊結束回到app.js匯入該模組並使用，建立用戶、產品、購物車彼此關連
+//8-1-1-01step 新增 Cart 模型，這邊結束回到app.js匯入該模組並使用，建立用戶、購物車彼此關連
 //如同 User 模型與 Product 模型，新增 models/cart.js 檔案來製作 Cart 模型：
 const Sequelize = require('sequelize');
 

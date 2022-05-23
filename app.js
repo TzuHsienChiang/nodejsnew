@@ -14,7 +14,6 @@ const shopRoutes = require('./routes/shop');
 const errorRoutes = require('./routes/404');
 
 const Product = require('./models/product');
-
 const User = require('./models/user'); //5-6
 
 const session = require('express-session');//5-7 先匯入express-session套件
@@ -22,8 +21,13 @@ const connectFlash = require('connect-flash'); //5-8
 
 const csrfProtection = require('csurf'); //7-4
 const bodyParser = require('body-parser'); //解析url
-//8-1-2 新增 Cart 模型後，回到app.js匯入該模組並使用，建立用戶、產品、購物車彼此關連
+
+//8-1-1-02step 新增 Cart 模型後，回到app.js匯入該模組並使用，建立用戶、購物車彼此關連
 const Cart=require('./models/cart');
+//8-1-2-02step 新增 CartItem 模型，並建立 User 與 Cart 與 Product 的關聯
+const CartItem = require('./models/cart-item');
+
+
 
 
 ////////////////////////////////////////////////////////////////
@@ -80,8 +84,8 @@ app.use((req, res, next) => {
     next();
 });
 
-//8-1-3 新增 Cart 模型後，回到app.js匯入該模組並使用，建立用戶、產品、購物車彼此關連
-/*定義 User 與 Cart 的關係 :
+/*8-1-1-03step 新增 Cart 模型後，回到app.js匯入該模組並使用，建立用戶、購物車彼此關連
+定義、建立 User 與 Cart 的關係、關聯 :
 在 User、Cart 之間有如下關聯：
 - 一個 User 擁有一個 Cart。
 - 一個 Cart 屬於一個 User。
@@ -89,6 +93,13 @@ app.use((req, res, next) => {
 */
 User.hasOne(Cart); //sequlize語法
 Cart.belongsTo(User);
+
+/*8-1-2-03step 定義、建立 Cart 與 Product 的關聯：
+一個 Cart 屬於多個 Product，而一個 Product 也屬於多個 Cart，他們之間使用 CartItem 來記錄商品數量：
+*/
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
+
 
 //使用authRoutes //0519新增修改
 app.use(authRoutes);

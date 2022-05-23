@@ -44,11 +44,25 @@ const postSignup = (req, res) => {
                 //return User.create({ displayName, email, password });
                 return bcryptjs.hash(password, 12)  //加密用戶輸入過的密碼
                 .then((hashedPassword) => {    //返回加密過的密碼
-                    return User.create({ displayName, email, password: hashedPassword });
+                    return User.create({ displayName, email, password: hashedPassword })
+
+                    //8-2 購物車功能(1) 建立 User 時一併建立專屬的 Cart
+                    .then((newUser) => {
+                        return newUser.createCart();
+                    })
+                    //8-2
                 })
+                //7-3
                 .catch((err) => {
                     console.log('create new user error: ', err);
-                }) //7-3
+                }) 
+                //7-3
+
+                //8-2
+                .catch((err) => {
+                    console.log('postSignup - newUser.carateCart error: ', err);
+                });
+                //8-2
             }
         })
         .then((result) => {
@@ -57,8 +71,9 @@ const postSignup = (req, res) => {
         .catch((err) => {
             console.log('signup_error', err);
         });
-}
+};
 
+//8-2 購物車功能(1) 建立 User 時一併建立專屬的 Cart
 
 const postLogin = (req, res) => {
     const { email, password } = req.body;
